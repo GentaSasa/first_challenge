@@ -136,7 +136,7 @@ void FirstChallenge::process()
           count = 1;
       }
 
-      if(GetYaw() < 0.1 && GetYaw() > -0.1 && count == 1)
+      if(GetYaw() < 0.05 && GetYaw() > -0.05 && count == 1)
       {
           second_move_judge = false;//回転移動おしまい
           third_move_judge = true;//壁まで接近
@@ -163,17 +163,10 @@ void FirstChallenge::process()
           run();
       }
 
-/*
-      if(first_move_judge == false && second_move_judge == false && third_move_judge == false)
+      if(count == 3)
       {
-          stop();
-
+        stop();
       }
- */
-if(count == 3)
-{
-    stop();
-}
 
 
       /*
@@ -187,12 +180,12 @@ if(count == 3)
           run();
       }
 */
-
+/*
       if(first_move_judge == false && second_move_judge == false && third_move_judge == false)
       {
           break;
       }
-
+*/
       ros::spinOnce();
       loop_rate.sleep();
     }
