@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-<node pkg="first_challenge_sasaki" name="first_challenge" type="first_challenge" output="screen"/>
+<node pkg="first_challenge_sasaki" name="first_challenge_sasaki" type="first_challenge_sasaki" output="screen"/>
 <node pkg="roomba_500driver_meiji" name="roomba_500driver_meiji" type="main500" />
-<node pkg="urg_node" name="urg_node" type="urg_node" args="_ip_address:=192.168.1.113"/>
+<node pkg="urg_node" name="urg_node" type="urg_node" args="_ip_address:=192.168.0.237"/>
 </launch>

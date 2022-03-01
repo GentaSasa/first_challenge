@@ -1,4 +1,4 @@
-#include "first_challeng_sasaki/first_challenge_sasaki.h"
+#include "first_challenge_sasaki/first_challenge_sasaki.h"
 
 FirstChallenge::FirstChallenge():private_nh_("~")
 {
@@ -30,7 +30,7 @@ void FirstChallenge::run()//直進
 void FirstChallenge::turn()
 {
     cmd_vel_.mode = 11;
-    cmd_vel.cntl.linear.x = 0.0;
+    cmd_vel_.cntl.linear.x = 0.0;
     cmd_vel_.cntl.angular.z = 0.1;
     pub_cmd_vel_.publish(cmd_vel_);
 }
@@ -88,7 +88,7 @@ void FirstChallenge::process()
     float target_angle = 2*M_PI;//目標移動角度
     float real_angle = 0;//現在の移動角度
     float dtheta = 0;//変位
-　　float range_min = 1e6;//センサの得た距離
+    float range_min = 1e6;//センサの得た距離
     int   count = 0;//回転のためのカウント変数開始は1停止は1
 
     bool first_move_judge = true;//1m移動が完了したらfalseにする
@@ -148,7 +148,7 @@ void FirstChallenge::process()
           turn();
       }
 
-      if(first_move_judge == false && second_move_judge == false  third_move_judge == true && scan_min_value < 500)
+      if(first_move_judge == false && second_move_judge == false &&  third_move_judge == true && range_min < 500)
       {
           third_move_judge = false;
       }
