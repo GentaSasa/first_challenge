@@ -23,6 +23,7 @@ class FirstChallenge
         void show_odom();
         void show_scan();
         double  GetYaw();//クオータニオンからRPYを取得する関数
+        void stop();
 
         int hz_;
 
