@@ -72,7 +72,6 @@ double  FirstChallenge::scan_min_value()
             range_min = laser_.ranges[i];
         }
     }
-
     return range_min;
 }
 
@@ -89,6 +88,8 @@ void FirstChallenge::process()
     float target_angle = 2*M_PI;//目標移動角度
     float real_angle = 0;//現在の移動角度
     float dtheta = 0;//変位
+　　float range_min = 1e6;//センサの得た距離
+    int   count = 0;//回転のためのカウント変数開始は1停止は1
 
     bool first_move_judge = true;//1m移動が完了したらfalseにする
     bool second_move_judge = false;//回転移動
@@ -101,6 +102,7 @@ void FirstChallenge::process()
       dtheta = GetYaw() - real_angle;
       real_disp = sqrt(dx*dx+dy*dy); //移動した距離を計算
       real_angle = GetYaw();
+      range_min = scan_min_value();
 
       if(real_disp >= target_disp )//移動距離が1m以上に到達したなら実行
       {
@@ -114,7 +116,11 @@ void FirstChallenge::process()
       {
           run();
       }
-
+      if(GetYaw() > M_PI/2.0 && GetYaw()< M_PI && count == 0)
+      {
+          count = 1;
+      }
+/*
       if(real_angle >= target_angle)
       {
           second_move_judge = false;//回転移動おしまい
@@ -127,12 +133,27 @@ void FirstChallenge::process()
       {
           turn();
       }
+*/
+      if(GetYaw() < 0.1 && GetYaw() > -0.1 && count == 1)
+      {
+          second_move_judge = false;//回転移動おしまい
+          third_move_judge = true;//壁まで接近
+          x = odometry_.pose.pose.position.x;//回転の前に並進移動距離の更新
+          y = odometry_.pose.pose.position.y;//回転の前に並進移動距離の更新
+
+      }
+
+      if(real_angle < target_angle && second_move_judge == true)//1周するまで回転
+      {
+          turn();
+      }
 
       if(first_move_judge == false && second_move_judge == false  third_move_judge == true && scan_min_value < 500)
       {
           third_move_judge = false;
       }
-      if(first_move_judge == false && second_move_judge == false && third_move_judge == true && scan_min_value > 500)//壁まで500mm以上なら実行
+
+      if(first_move_judge == false && second_move_judge == false && third_move_judge == true && range_min > 500)//壁まで500mm以上なら実行
       {
           run();
       }
